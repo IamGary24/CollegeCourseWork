@@ -4,7 +4,7 @@ The files in this folder are the cumulative course work completed during my time
 Texas A&M Commerce and Richland Community College.
 
 
-CSCI 430 Introduction to Operating Systems
+## CSCI 430 Introduction to Operating Systems
 
 This file contains four programs written in C++.
 This course was the follow up to Machine Language and taught the basics of Operating Systems.
@@ -12,13 +12,13 @@ This course was the follow up to Machine Language and taught the basics of Opera
 One program from this course is seperate labeled GaryFowlerCSCI430Program5
 
 
-CSCI 270 Data Structures
+## CSCI 270 Data Structures
 
 This file contains four programs written in C++.
 This course taught binary search, trees, linked lists, and other important data structures.
 
 
-CSCI 333 Java Language Programming
+## CSCI 333 Java Language Programming
 
 This file is titled JavaClassCoursework
 This file also hosts Programming Fundamentals II Coursework
@@ -28,7 +28,7 @@ Language, how to incorporate our knowledge into this language, the major differe
 languages, and some advanced Object Orient Programming.
 
 
-PHYS 319 Computational Physics
+## PHYS 319 Computational Physics
 
 This file is titled PythonCourseWork
 There are multiple files in here holding multiple scripts each.
@@ -38,13 +38,13 @@ The files are stored as ipynb extensions, which are ipython notebooks we used th
 and Spyder as a IED.
 
 
-MATH 401 Essentials of Statistics
+## MATH 401 Essentials of Statistics
 
 This course was the required stats course, it is included here to show knowledge of the R language.
 We used R Studio to do the coding, the files are R Notebooks.
 
 
-CSCI 428 Introduction to Object Oriented Programming
+## CSCI 428 Introduction to Object Oriented Programming
 
 These files are titled GaryFowler_Program3Starcraft and
 gary_fowler_AutomobileClass_CSCI428
