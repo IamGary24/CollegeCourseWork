@@ -1,0 +1,137 @@
+---
+title: "Takehome Test 1"
+author: "Gary Fowler"
+date: "October 10, 2017"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+
+## Problem 1
+
+Give precise defintions/statements for each of the following terms, and provide an R Solution example.
+
+a)100p-th quantile of a sample
+A quantile is a cutpoint dividing the range of a distribution.
+The 100p-th quantiles are also called percentiles.
+
+b) Baye's Theorem:
+Let E and F be events. E can be expressed as $E = EF\cup EF^c$
+This is because for an element to be in E, it must be in either E and F or be in E but not in F.
+We can then compute:
+$P(E) = P(EF) + P(EF^c)$
+$=P(E|F)P(F) + P(E|F^c)P(F^c)$
+$=P(E|F)P(F) + P(E|F^c)[1-P(F)]$
+
+c)The density of f(x) for the geometric random variable is the equation:
+$f(x) = (1-p)^{x-1} * p$
+
+d)The geometric summation formula:
+If the sequence has n terms, then the first n terms are:
+$S_n = \sum_{k=0}^{n-1}ar^{k}= \frac{a(1-r^n)}{1-r}$
+For infinite possibilities:
+$S_n = \sum_{k=0}^{\infty}ar^{k}= \frac{a}{1-r}$
+
+
+e)Chebyshev's Inequality
+$S_k = \{x_i \in S : |x_i-\bar{x} <k*s\}$
+
+## Problem 2
+
+Suppose we have three boxes. One box contains two gold coins, one contains a gold coin and a silver coin, and the final box contains two silver coins. One box is selected randomly and a coin is withdrawn. If the coin is gold, what is the probability that the remaining coin is also gold? [Baye's Formula]
+
+We are looking for $P(B|E)$ which is probability of a box containing two golds given one is drawn which equals $\frac{P(E|B)*P(B)}{P(E)}$
+The problem is we have 2 possible boxes, as the third box is not possible.
+So our equation becomes
+$\frac{P(E|B_1)*P(B_1)}{P(E|B_1)*P(B_1) + P(E|B_2)*P(B_2)}$
+Where $B_1$ is our box with two gold coins.
+Thus our solution is P(E|B) which is the probability that a gold coin is drawn given a box:
+$\frac{1*\frac{1}{3}}{1*\frac{1}{3}+.5*\frac{1}{3}}$
+Therefore the probability that a box containing a second gold coin, given the first coin drawn was gold, is $\frac{2}{3}$
+
+```{r}
+pB = 1/3
+pEB1 = 1
+pEB2 = 1/2
+prob = (pEB1 * pB) / ((pEB1 * pB) + (pEB2 * pB))
+prob
+```
+
+
+## Problem 3
+
+Random integers are selected from $\{0,1,2,3,4,5,6,7,8,9\}$. Let X denote the number of trials to obtain the first 0. Write the sample space and compute the density function f(x) for X. What is the probability it will take more than three trials?
+
+This is a geometric distribution function. Our Sample Space is:
+$S = \{0, i0, ij0, ijk0, ijkl0, ijklm0, ijklmn0, ... , ijklmnbvg0  \}$ 
+where i,j,k,l,m,n,b,v,g are integers between 1 and 9 including 1 and 9 chosen before 0.
+The density function is $f(x) = (1-p)^{x-1}*p$ where x is the number of trials until success. p is our success rate $p = \frac{1}{10}$
+thus our equation becomes:
+$f(x) = (\frac{9}{10})^{x-1}*\frac{1}{10}$
+
+$P(X > 3) = 1 - P(X \leq 3)$
+$= 1 - f(1) - f(2) - f(3)$
+$=1 - 0.1 - 0.09 - .081 = .729$
+Therefore there is a 72.9% chance that it will take more than three trials
+
+```{r}
+x = 0:2
+prob = .1
+dgeom(x,prob)
+y = dgeom(x,prob)
+1 - sum(y)
+```
+
+## Problem 4
+
+X is the standard normal variable whose mean is 0 and standard deviation is 1.
+a) Find the probability that X is within two standard deviations of its mean.
+
+Using the 68-95-99.7 rule the probability that x is within two standard deviations should be 95%.
+
+b) Use the Chebyshev's inequality to approximate the same probability.
+
+$S_k = \{x_i \in S : |x_i-\bar{x} <k*s\}$
+$\frac{|S_k|}{n} > \frac{1}{k^2}$ where k is 2
+$> 1-\frac{1}{4} = \frac{3}{4}$
+$\frac{|S_k|}{n} > \frac{3}{4} = 75\%$
+
+Using Chebyshev's inequality we have found that the answer is above 75%, but using the normal distribution rule we have discovered the true result to be more like 95%.
+Therefore while Chebyshev's inequality is correct, it is widely inaccurate as our solution is a whopping 20% off.
+
+## Problem 5
+
+Calculate F(x) for the exponential random variable:
+$f(x) = e^{-x}$ where x > 0, and f(x) = 0 otherwise.
+
+$F(x) = \int_{-\infty}^{x}e^{-y}dy$
+$=\int_{0}^{x}e^{-y}dy$
+$=-e^{-y}|_0^x = -e^{-x} + 1$
+
+## Problem 6
+
+The density for X is given by $f(x) = ce^{-x}$ for x = 1,2,3,...
+Find the value of c that makes the function a valid density.
+
+This is a geometric distribution again.
+$\sum_1^\infty c*e^{-x} = 1$
+$= (\frac{c}{1-e}) = 1$
+This is derived from the formula for the sum of a geometric series
+$c = 1 - e = -1.718$
+
+
+## Problem 7
+Consider $fxy(x,y) = 8xy,$ 0<y<x<1
+a) Verify that $fxy(x,y)$ is a valid joint density function for the joint random variable (X,Y)
+b) Find the marginal densities $f_X(x)$ and $f_Y(y)$
+
+We must first show that $\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}8xydxdy = 1$
+$\int_{-\infty}^{\infty}8xydx\int_{-\infty}^{\infty}8xydy = 1$
+$\int_y^1\int_{0}^{x}8xydydx = \int_y^1x\int_{0}^{x}8ydy = \int_y^1x4y^2|_{0}^x = \int_y^14x^3dx = x^4|_y^1 = y^4 - 1 = 1$
+
+Now for the marginal densitites:
+$f_X(x) = x\int_{-\infty}^\infty8ydy = x4y^2|_{0}^x = 4x^3$
+$f_Y(y) = y\int_{-\infty}^\infty8xdx = y4x^2|_{1}^y = 4y^3 - 4y$
+
+

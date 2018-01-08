@@ -1,0 +1,245 @@
+---
+title: "GFtakehome_final"
+author: "Gary Fowler"
+date: "December 10, 2017"
+output: html_document
+---
+
+## Problem 1
+
+Give precise definitions/descriptions for each of the following terms.
+
+(A)the p-value of a test statistics TS for two sided hypothesis testing
+
+The p-value is the probability that a standard normal would exceed sqrt(n)(Xbar - munot)/sigma
+
+(B)the pooled estimator S2p of ??2 for two samples of sizes n and m from normal populations N(µ1, ??2) and N(µ2, ??2) respectively
+
+$$S^2_p = \frac{(n-1)S^2_x + (m-1)S^2_y}{n + m - 2}$$
+
+(C)the least squares estimator (LSE) of a regression parameters
+
+$$B = \frac{\Sigma^n_{i=1}x_iY_i - \overline{x}\Sigma^n_{i=1}Y_i}{\Sigma^n_{i=1}x_i^2-n\overline{x}^2}$$
+$$A = \overline{Y}-B\overline{x}$$
+(D)the two sided %100(1 ??? ??) confidence level interval estimate of µ for a random sample of size n from a normal population with unknown ??
+
+$$\mu \epsilon (\overline{x} - \frac{s}{\sqrt(n)}t_{a,n-1},\overline{x} + \frac{s}{\sqrt(n)}t_{a,n-1})$$
+
+## Problem 2
+
+Show that the estimator B of the parameter ?? in the simple linear regression model may be written as:
+
+$$B=\frac{S_{xY}}{S_{xx}}$$
+
+If we consider $S_{xY} = \Sigma^n_{i=1}(x_i-\overline{x})(y_i-\overline{y}) = \Sigma^n_{i=1} x_iY_i - n \overline{x}\overline{Y} =  \frac{\Sigma^n_{i=1}x_iY_i-\Sigma^n_{i=1}x_i*\Sigma^n_{i=1}Y_i}{n}$
+
+and if we consider $S_{xx} = \Sigma^n_{i=1}(x_i-\overline{x})^2 = \Sigma^n_{i=1}x_i^2 - n\overline{x}^2 = \frac{\Sigma^n_{i=1}x_i^2-(\Sigma^n_{i=1}x_i^2)}{n}$}$
+
+now we must put these two as a fraction
+$\frac{\Sigma^n_{i=1}x_iY_i-\Sigma^n_{i=1}x_i*\Sigma^n_{i=1}Y_i}{n}$ / 
+$\frac{\Sigma^n_{i=1}x_i^2-(\Sigma^n_{i=1}x_i^2)}{n}$
+
+this equals
+$$\frac{\Sigma^n_{i=1}x_iY_i-n\Sigma^n_{i=1}x_i*\Sigma^n_{i=1}Y_i}{\Sigma^n_{i=1}x_i^2-(\Sigma^n_{i=1}x_i^2)}$$
+
+which is equivalent to B
+
+Now we need to prove $SS_r =\frac{ S_{xx}S_{YY}-(S_{xY})^2}{S_xx}$
+
+$SS_R = \Sigma(Y_i - A - B_{x_i})^2, A = (\frac{Y_i}{n}-B\overline{x}), B = \frac{S_{xY}}{S_{xx}}$
+
+$SS_R = \Sigma(Y_i - \overline{Y} - B\overline{x}-Bx_i)^2 = \Sigma(Y_i - \overline{Y} - B(\overline{x}-x_i))^2$
+
+Now if we square this quantity and perform some algebra we get:
+
+$s_{YY} - 2S_{xY}B+B^2S_{xx} = s_{YY} - 2S_{xY}\frac{S_{xY}}{S_{xx}}+\frac{S_{xY}}{S_{xx}}^2S_{xx}=s_{YY} - 2\frac{S^2_{xY}}{S_{xx}}+\frac{S^2_{xY}}{S_{xx}}=s_{YY} - \frac{S^2_{xY}}{S_{xx}}=\frac{S_{xx}S_{YY}}{S_{xx}} - \frac{S^2_{xY}}{S_{xx}}=\frac{S_{xx}S_{YY}-S^2_{xY}}{S_{xx}}$
+
+
+## Problem 3
+
+Show that the estimator B of the parameter ?? in the simple linear regression model has the distribution
+
+$$B = N(\beta,\sigma^2/S_{xx}) $$
+
+Since y_i is independent with $y_i = N(\beta x_in, \sigma^2)$ and x_i are constant:
+
+$E(\beta) = \frac{1}{S_{xx}}ES_{xY} = \frac{1}{S_{xx}}\Sigma(x_i-\overline{x})EY_i = \frac{1}{S_{xx}}\beta\Sigma(x_i-\overline{x})x_i \frac{\beta}{S_{xx}}\Sigma(x_i^2-x_i\overline{x})=\frac{\beta}{S_{xx}}\Sigma(x_i^2-n\overline{x})= \frac{\beta}{S_{xx}}S_{xx}= \beta$
+
+$Var(\beta) = \frac{1}{S^2_{xx}}Var(S_{xY}) = \frac{1}{S^2_{xx}}\Sigma(x_i-\overline{x})^2Var(y_i) = \frac{\sigma^2}{S_{xx}}$
+
+Thus $B = N(\beta,\sigma^2/S_{xx})$
+
+
+## Problem 4
+
+Two new types of tires are tested for their lifetime at two locations A and B, and the resulting data (in units of 100 km) is
+
+
+A : 61 58 62 64
+B : 62 57 66
+
+
+It is known that the lifetimes tested at these locations are both normal with ??1 = 4000 km and ??2 = 6000 km respectively. What would be the conclusion if a %5 level of significance test for the mean lifetime of these two new tires is performed using the given data.
+
+```{r}
+sampleSize = 7
+Avalues = c(61,58,62,62)
+Bvalues = c(62,57,66)
+alpha = .05
+
+sigma1 = 4000
+sigma2 = 6000
+
+axbar = mean(Avalues)
+bybar = mean(Bvalues)
+
+hypnot = axbar - bybar #this is what we accept against
+critical = sqrt((sigma1^2/4)+(sigma2^2/3))
+critical
+
+z = (hypnot-alpha)/sqrt(alpha*(1-alpha)/sampleSize)
+z*critical
+hypnot
+```
+
+We will reject the test as axbar - bybar is larger than the critical
+
+## Problem 5
+
+Suppose X1, . . . , Xn are independent Poisson random variables each having mean ??.
+
+(a) Determine the maximum likelihood estimator of ??.
+
+The function is:
+$f(x_1,...,x_n|\lambda) = \frac{e^{-\lambda}\lambda^{x_1}}{x_1!}...\frac{e^{-\lambda}\lambda^{x_n}}{x_n!} = \frac{e^{-n\lambda}\lambda^{ \Sigma_1^n x_i}}{x_1!...x_n!}$
+
+$logf(x_1,...,x_n|\lambda)=-n\lambda + \Sigma^n_1x_ilog\lambda - logc$
+
+c does not depend on lambda
+
+$\frac{d}{d\lambda}logf(x_1,...,x_n|\lambda)=-n + \frac{\Sigma^n_1x_i}{\lambda}$
+
+now we equate to 0 to obtain the estimator
+
+$\hat\lambda=\frac{\Sigma^n_1x_i}{n}$
+
+therefore:
+
+$d(X_1,...,X_n)=\frac{\Sigma^n_1X_i}{n}$
+
+
+(b) The number of traffic accidents in a city in 10 randomly chosen non-rainy days in 2007 is as follows:
+
+4, 0, 6, 5, 2, 1, 2, 0, 4, 3
+
+What is the probability that a day in 2007 had two or fewer accidents in
+that city?
+
+```{r}
+data = c(4,0,6,5,2,1,2,0,4,3)
+xbar = mean(data)
+xbar
+ppois(2,lambda=xbar) #we are looking for P(X <= 2)
+```
+
+## Problem 6
+
+Assume that the variance is ??^2 = 4 for a normal population, and consider the random data
+
+5, 8.5, 12, 15, 7, 9, 7.5, 6.5, 10.5
+
+from that population.
+
+(a) Construct a %95 confidence interval for µ.
+
+(b) Determine upper and lower %95 confidence interval estimates of µ.
+
+Work the problem using the same sample data assuming this time that ?? is unknown.
+
+
+```{r}
+data = c(5,8.5,12,15,7,9,7.5,6.5,10.5)
+xbar = mean(data)
+xbar
+
+```
+
+So our mu is 0, sigma is 2, n is 9, and xbar is 9
+
+Then with a 95% confidence interval we find:
+
+$(9-1.96\frac{\sigma}{3},9-1.96\frac{\sigma}{3}$
+
+which is:
+
+```{r}
+xbar = 9
+sigma = 2
+n = 9
+
+xbar - (1.96*sigma/sqrt(n))
+xbar + (1.96*sigma/sqrt(n))
+
+```
+
+So we are 95% confident that the true value lies between 7.69 and 10.31
+
+1.645 * sigma/sqrt(n) = 1.097
+
+The lower interval is:
+(-infinity,9+1.097) = (-inf,10.097)
+
+The upper interval is:
+(9-1.097,inf) = (7.903,inf)
+
+
+Now sigma is unknown
+```{r}
+data = c(5,8.5,12,15,7,9,7.5,6.5,10.5)
+n = 9
+xbar = mean(data)
+xbar
+s2 = var(data)
+s2
+s = sqrt(s2)
+s
+
+s / sqrt(n)
+```
+
+Now we do a t.025,8
+
+(9 - 2.306[3.082/3],9+2.306[3.082/3]) = (6.63,11.37)
+
+Thus we are 95% certain that the true value is between
+6.63 and 11.37
+
+Lower
+
+(-inf, 9 - 1.027(2.31)) = (-inf, 6.63)
+
+Upper
+
+(9 + 1.027(2.31) , inf) = (11.37, inf)
+
+##Problem 7
+
+Consider data pairs xi and Yi for i = 1, . . . , 10:
+
+x : 100 110 120 130 140 150 160 170
+
+Y : 45 52 54 63 62 68 75 76
+
+The Y corresponds to percent yield of a laboratory experiment and xi to temperature at which the experiment was run. Graph the scatter diagram, and find the estimated regression line.
+
+```{r}
+xvals = c(100,110,120,130,140,150,160,170)
+yvals = c(45,52,54,63,62,68,75,76)
+points = cbind(xvals,yvals)
+plot(points, col="blue")
+
+s = function(r,m) sum((r-mean(r))*(m-mean(m)))
+B = s(xvals, yvals)/s(xvals, xvals)
+A = mean(yvals) - B*mean(xvals)
+curve(A+B*x, add=T, col="red")
+```

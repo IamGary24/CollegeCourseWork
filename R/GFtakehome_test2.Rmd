@@ -1,0 +1,112 @@
+---
+title: "Takehome Test 2"
+author: "Gary Fowler"
+date: "November 8, 2017"
+output:
+  html_document: default
+  html_notebook: default
+---
+
+
+## Problem 1
+
+Give precise definitions/descriptions for each of the following terms.
+
+(A)a statistic - is a collection of data used to explain or understand a piece of information. This data is generally used to make inferences about unknowns.
+(B)the maximum likelihood estimator(MLE) - the value of an estimate($\theta$) maximizing $f(x_1,...,x_n|\theta$ where x are the observed values.
+(Ca)sample mean - $\bar X = \Sigma_{i=1}^{n} X_i/n$ the sample mean is a collection of data and the average across that collection.The central limit theorem can be used to approximate the distribution of this mean which is normal.
+(Cb)sample variance - $S^2 = \frac{\Sigma_{i=1}^{n} (X_i - \bar X)^2}{n-1}$
+(D)the Central Limit Theorem - 
+Let $X_1,X_2,...,X_n$ be a sequence of independent identically distributed random variables each with mean $\mu$ and variance $\sigma^2$. For a large n, the distribution is approximately normal with mean $n\mu$ and variance $n\sigma^2$.
+Thus for n large $P(\frac{X_1,X_2,...,X_n-n\mu}{\sigma \sqrt{n}}<x) = P(Z < x)$
+(E)the Z score for the standard normal distribution N(0,1) - This means mu is 0 and standard deviation is 1 leading to the 68-95-99 principal. 68% of the sample lie within 1 standard deviation, 95% within 2 and 99% within 3.
+(F) covariance and correlation of (X,Y) - 
+$Cov(X,Y) = E[(x-\mu_x)(y-\mu_y)] = E[XY] - E[X]E[Y]$
+$Corr(X,Y) = \frac{Cov(X,Y)}{\sigma_x\sigma_y}$
+
+## Problem 2
+
+A surveyor is measuring the height of a cliff known to be about 1000ft. He assumes his instrument is properly calibrated and that his measurement errors are independent, mean $\mu = 0$ and variance $\sigma^2 = 10$.
+He plans to take 100 measurements, and then form the average. Estimate the probability that his average falls within 1 foot of the true value.
+
+Since the measurements are independent this is a normal distribution.
+Therefore we will be using the equation:
+$P(\frac{X_1 + X_2 + ... + X_n - n\mu}{\sigma \sqrt{n}}) < x$
+Which approximately equals:
+$P(Z < x) = \frac{X}{10\sqrt{10}} < 1 = \frac{X - 0}{10\sqrt{10}} < \frac{1 - 0}{10\sqrt{10}} = P(Z < .0316)$
+
+```{r}
+mean = 0
+sd = 3.162 #sigma^2 = 10, thefore std dev is sqrt(10)
+size = 100
+x = pnorm(size, mean, sd)
+x
+
+
+```
+
+
+
+## Problem 3
+
+The joint density for (X,Y), where X is the arrival time of the first vehicle from the north-south direction and Y is the arrival time of the first vehicle from the east-west direction given by:
+$f_{xy}(x,y) = \frac{1}{x}$ 0 < y < x < 1.
+Find the covariance Cov(X,Y) and the correlation.
+
+$Cov(X,Y) = E[XY] - E[X]E[Y]$
+where
+$E[X] = \int_{y}^{1}xf(x) = \int_{y}^{1}x/xdx = x|_y^1 = 1-x$
+and
+$E[Y] = \int_{0}^{x}yf(y) = \int_{0}^{x}(1/x)ydy = 1/x\int_{o}^{x}ydy = 1/x(y^2/2)|_0^x = x/2$
+and
+$E[XY] = \int_{0}^{x}\int_{y}^{1}f(x,y)dxdy = \int_{0}^{x}\int_{y}^{1}\frac{1}{x}dxdy = \int_{0}^{x}ln1 - lnydy = -ylny-y|_0^x = -xlnx - x$
+therefore the Cov(X,Y) is:
+$-xlnx-x-(1-x)(x/2)$
+
+meaning the correlation is:
+$\frac{Cov(X,Y)}{\sigma_x \sigma_y} = \frac{-xlnx-x-(1-x)(x/2)}{\sigma_x\sigma_y}$
+```{r}
+n = 100
+x = runif(n)
+y = 1/x
+cov(x,y)
+cor(x,y)
+```
+
+## Problem 4
+
+The ideal size of a first-year class at a particular college is 150 students. The college, knowing from past experience that only 30% of those accepted for admission will actually attend, uses a policy of approving the applications of 450 students. Compute the probability that more than 150 first-year students attend this college.
+
+We will let X denote the number of students attending. This X is a binomial random variable.
+
+We are looking for P(X > 150).
+
+P(X = i) = P(i - .5 < X < i + .5)
+
+$P(X > 150.5) = P(\frac{x - 450(.3)}{\sqrt{450(.3)(.7)}} >= \frac{150.5 - 450(.3)}{\sqrt{450(.3)(.7)}}) = P(Z > 1.59)$
+
+```{r}
+x = seq(0,450,1)
+prob = .3
+size = 450
+pmf = dbinom(x,size,prob)
+plot(dbinom(x,size,prob),type="h")
+
+```
+
+## Problem 5
+
+Find formula for Var(X+Y+Z).
+
+Consider the formula Var(X+Y) = Var(X) + Var(Y) + 2Cov(x,y)
+Similarly we can write the formula:
+Var(X+Y+Z) = Var(x) + Var(y) + Var(Z) + $\Sigma Cov(X_i,X_j)$ = Var(x) + Var(y) + Var(Z) + Cov(X,Y) + Cov(X,Z) + Cov(Y,Z)
+
+## Problem 6
+
+Let X be the normal random variable X~N($\mu,\sigma$). Calculate its expected value in two ways, using the definition of expected value and the moment generating function of X.
+
+$E[X] = \int_{-\infty}^{\infty}(x-\mu)e^{-(x-\mu)^2/2\sigma}dx = \int_{-\infty}^{\infty}ye^{-y^2/2}dy = -e^{-y^2/2}|_{-\infty}^{\infty} = 0$
+$E[e^t\Sigma_{i=1}^nX_i] = \Pi_{i=1}^{n}E[e^{tX_i}] = e^{\mu t+\sigma t/2}$
+
+
