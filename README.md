@@ -7,6 +7,7 @@ Texas A&M Commerce and Richland Community College.
 ## CSCI 430 Introduction to Operating Systems
 
 This file contains four programs written in C++.
+
 This course was the follow up to Machine Language and taught the basics of Operating Systems.
 
 
@@ -16,6 +17,7 @@ One program from this course is seperate labeled GaryFowlerCSCI430Program5.
 ## CSCI 270 Data Structures
 
 This file contains four programs written in C++.
+
 This course taught binary search, trees, linked lists, and other important data structures.
 
 
